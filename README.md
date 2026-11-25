@@ -35,6 +35,19 @@ python -m maze_runner.experiment config/final.json --out results/repro_check
 python tools/compare_runs.py results/final/runs.csv results/repro_check/runs.csv
 ```
 
+## The report
+
+The submitted report is `report/ieee/Maze_Runner_IEEE.pdf` (IEEE conference template). It is
+generated from the same script and results as the Word version, so the two cannot disagree:
+
+```
+python report/build_report.py --ieee      # writes report/ieee/Maze_Runner_IEEE.tex and figures
+cd report/ieee
+pdflatex Maze_Runner_IEEE.tex             # run three times (needs a LaTeX install; IEEEtran.cls is included)
+```
+
+`python report/build_report.py` (no flag) writes the Word version, `report/Maze_Runner_Final_Report.docx`.
+
 ## Layout
 
 ```

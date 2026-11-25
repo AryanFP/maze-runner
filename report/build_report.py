@@ -17,12 +17,17 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from docx_helpers import Report  # noqa: E402
+IEEE = "--ieee" in sys.argv  # write the IEEE conference version (LaTeX) instead of the Word report
+if IEEE:
+    from latex_helpers import Report  # noqa: E402
+else:
+    from docx_helpers import Report  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "results" / "final"
 FIG = RES / "figures"
-OUT = ROOT / "report" / "Maze_Runner_Final_Report.docx"
+OUT = (ROOT / "report" / "ieee" / "Maze_Runner_IEEE.tex" if IEEE
+       else ROOT / "report" / "Maze_Runner_Final_Report.docx")
 
 S = json.loads((RES / "summary.json").read_text(encoding="utf-8"))
 META = json.loads((RES / "metadata.json").read_text(encoding="utf-8"))
@@ -137,6 +142,14 @@ R = Report(
             "ablation", "contrib", "env", "extra"],
 )
 F, Tn = R.F, R.T
+if IEEE:
+    R.title = "Maze Runner: Comparing Uninformed and Heuristic Search in Grid Mazes"
+    R.subtitle = "When does the A* heuristic stop helping?"
+    R.authors = [("Aryan Muhammad", "251357591"), ("Austin Brown", "251446658"), ("Aryan Farhang", "251311878"),
+                 ("Ki il Eum", "251181143"), ("Yicheng Luo", "251248739")]
+    R.affiliation = ["CS3346A, Group 26", "Dept. of Computer Science", "Western University, London, Canada"]
+    R.keywords = ("heuristic search, A*, breadth-first search, uniform cost search, maze generation, "
+                  "tie-breaking, reproducibility")
 
 # =============================================================================== title
 R.p("**Maze Runner: Comparing Uninformed and Heuristic Search in Grid Mazes**", align="center", size=18,
@@ -386,14 +399,15 @@ R.code("""
 best_g[start] = 0;  frontier.push(start)
 while frontier is not empty:
     s, g = frontier.pop()
-    if g > best_g[s]: continue              # stale record, not counted
-    if s is the goal: return path           # goal test at removal
+    if g > best_g[s]: continue       # stale record, not counted
+    if s is the goal: return path    # goal test at removal
     expanded += 1
-    for v in neighbours(s) in the order Up, Right, Down, Left:
-        g2 = g + step_cost(s, v)            # BFS uses 1 for every step
-        if g2 < best_g[v]:                  # strict improvement only
+    for v in neighbours(s):          # order Up, Right, Down, Left
+        g2 = g + step_cost(s, v)     # BFS uses 1 for every step
+        if g2 < best_g[v]:           # strict improvement only
             best_g[v] = g2;  parent[v] = s;  generated += 1
-            if BFS and v is the goal: return path   # goal test at generation
+            if BFS and v is the goal:
+                return path          # goal test at generation
             frontier.push(v)
 return failure
 """)
@@ -1118,10 +1132,11 @@ R.table("env", ["Item", "Value"], [
 R.p("**Commands** (from the repository root, after `pip install -r requirements.txt` and `pip install -e .`):",
     space_after=2)
 R.code("""
-python -m pytest -q                 # run all tests
-python run_all.py --quick           # small check run, about a minute
-python run_all.py                   # tests, final experiments, tables, figures, this report
-python -m maze_runner.experiment config/final.json --out results/repro_check
+python -m pytest -q         # run all tests
+python run_all.py --quick   # small check run (about a minute)
+python run_all.py           # tests, experiments, figures, report
+python -m maze_runner.experiment config/final.json \\
+       --out results/repro_check
 """)
 R.p(
     "The repository contains the final results file (results/final/runs.csv, one row per maze and "
@@ -1136,6 +1151,8 @@ R.p(
 
 # ========================================================================== appendix B
 R.h("Appendix B: Additional tables and figures")
+R.p(f"{Tn('extra')} and {F('frontier')} give the remaining metrics of the main experiment: nodes generated, "
+    "peak frontier size, median search time and the paired significance test.")
 extra = []
 for maze_type in ("perfect", "looped"):
     for n in SIZES:

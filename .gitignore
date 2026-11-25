@@ -5,3 +5,8 @@ __pycache__/
 results/quick/
 results/repro_check/
 ~$*
+
+# LaTeX build files
+report/ieee/*.aux
+report/ieee/*.log
+report/ieee/*.out
