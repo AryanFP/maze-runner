@@ -1,0 +1,192 @@
+{
+  "suite": "quick",
+  "defaults": {
+    "loop_rate": 0.1,
+    "mud_rate": 0.2,
+    "tie_rule": "larger_g",
+    "neighbor_order": [
+      "Up",
+      "Right",
+      "Down",
+      "Left"
+    ]
+  },
+  "experiments": [
+    {
+      "name": "main",
+      "maze_types": [
+        "perfect",
+        "looped"
+      ],
+      "sizes": [
+        10,
+        25
+      ],
+      "seeds": {
+        "start": 90,
+        "count": 5
+      },
+      "loop_rates": [
+        0.1
+      ],
+      "timing_repeats": 5,
+      "runs": [
+        {
+          "algorithm": "bfs",
+          "goal_test": "generation"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "tie_rule": "larger_g"
+        }
+      ]
+    },
+    {
+      "name": "sweep",
+      "maze_types": [
+        "looped"
+      ],
+      "sizes": [
+        10,
+        25
+      ],
+      "seeds": {
+        "start": 90,
+        "count": 5
+      },
+      "loop_rates": [
+        0.0,
+        0.02,
+        0.05,
+        0.1,
+        0.2,
+        0.35,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "timing_repeats": 1,
+      "runs": [
+        {
+          "algorithm": "bfs",
+          "goal_test": "generation"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "tie_rule": "fifo"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "tie_rule": "larger_g"
+        }
+      ]
+    },
+    {
+      "name": "weighted",
+      "maze_types": [
+        "weighted"
+      ],
+      "sizes": [
+        10,
+        25
+      ],
+      "seeds": {
+        "start": 90,
+        "count": 5
+      },
+      "loop_rates": [
+        0.1
+      ],
+      "mud_rates": [
+        0.0,
+        0.1,
+        0.2,
+        0.4
+      ],
+      "timing_repeats": 5,
+      "runs": [
+        {
+          "algorithm": "bfs",
+          "goal_test": "generation"
+        },
+        {
+          "algorithm": "ucs"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "tie_rule": "larger_g"
+        }
+      ]
+    },
+    {
+      "name": "ablation",
+      "maze_types": [
+        "perfect",
+        "looped"
+      ],
+      "sizes": [
+        10,
+        25
+      ],
+      "seeds": {
+        "start": 90,
+        "count": 5
+      },
+      "loop_rates": [
+        0.1
+      ],
+      "timing_repeats": 1,
+      "runs": [
+        {
+          "algorithm": "bfs",
+          "goal_test": "generation"
+        },
+        {
+          "algorithm": "bfs",
+          "goal_test": "pop"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "tie_rule": "fifo"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "tie_rule": "larger_g"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "zero",
+          "tie_rule": "fifo"
+        },
+        {
+          "algorithm": "greedy",
+          "heuristic": "manhattan"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "weight": 1.5,
+          "tie_rule": "larger_g"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "weight": 2.0,
+          "tie_rule": "larger_g"
+        },
+        {
+          "algorithm": "astar",
+          "heuristic": "manhattan",
+          "weight": 3.0,
+          "tie_rule": "larger_g"
+        }
+      ]
+    }
+  ]
+}

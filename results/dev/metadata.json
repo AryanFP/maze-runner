@@ -1,0 +1,284 @@
+{
+  "suite": "dev",
+  "config_file": "config/dev.json",
+  "started_utc": "2026-11-25T03:11:36+00:00",
+  "duration_s": 479.0,
+  "environment": {
+    "python": "3.13.6",
+    "implementation": "CPython",
+    "os": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "cpu": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "cpu_count": 12,
+    "packages": {
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "matplotlib": "3.11.2",
+      "scipy": "1.18.1",
+      "pytest": "9.2.0",
+      "pillow": "13.0.0",
+      "python-docx": "1.2.0"
+    },
+    "git_commit": "",
+    "git_describe": "",
+    "git_dirty": false
+  },
+  "neighbor_order": [
+    "Up",
+    "Right",
+    "Down",
+    "Left"
+  ],
+  "counts": {
+    "mazes": 2650,
+    "rows": 9350,
+    "verified": 9350,
+    "optimal_expected": 7550,
+    "optimal_ok": 7550
+  },
+  "counts_per_experiment": {
+    "main": {
+      "mazes": 400,
+      "rows": 800,
+      "verified": 800,
+      "optimal_expected": 800,
+      "optimal_ok": 800
+    },
+    "sweep": {
+      "mazes": 1350,
+      "rows": 4050,
+      "verified": 4050,
+      "optimal_expected": 4050,
+      "optimal_ok": 4050
+    },
+    "weighted": {
+      "mazes": 600,
+      "rows": 1800,
+      "verified": 1800,
+      "optimal_expected": 1200,
+      "optimal_ok": 1200
+    },
+    "ablation": {
+      "mazes": 300,
+      "rows": 2700,
+      "verified": 2700,
+      "optimal_expected": 1500,
+      "optimal_ok": 1500
+    }
+  },
+  "seeds": {
+    "main": {
+      "start": 0,
+      "count": 50
+    },
+    "sweep": {
+      "start": 0,
+      "count": 50
+    },
+    "weighted": {
+      "start": 0,
+      "count": 50
+    },
+    "ablation": {
+      "start": 0,
+      "count": 50
+    }
+  },
+  "config": {
+    "suite": "dev",
+    "defaults": {
+      "loop_rate": 0.1,
+      "mud_rate": 0.2,
+      "tie_rule": "larger_g",
+      "neighbor_order": [
+        "Up",
+        "Right",
+        "Down",
+        "Left"
+      ]
+    },
+    "experiments": [
+      {
+        "name": "main",
+        "maze_types": [
+          "perfect",
+          "looped"
+        ],
+        "sizes": [
+          10,
+          25,
+          50,
+          100
+        ],
+        "seeds": {
+          "start": 0,
+          "count": 50
+        },
+        "loop_rates": [
+          0.1
+        ],
+        "timing_repeats": 5,
+        "runs": [
+          {
+            "algorithm": "bfs",
+            "goal_test": "generation"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "tie_rule": "larger_g"
+          }
+        ]
+      },
+      {
+        "name": "sweep",
+        "maze_types": [
+          "looped"
+        ],
+        "sizes": [
+          25,
+          50,
+          100
+        ],
+        "seeds": {
+          "start": 0,
+          "count": 50
+        },
+        "loop_rates": [
+          0.0,
+          0.02,
+          0.05,
+          0.1,
+          0.2,
+          0.35,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "timing_repeats": 1,
+        "runs": [
+          {
+            "algorithm": "bfs",
+            "goal_test": "generation"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "tie_rule": "fifo"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "tie_rule": "larger_g"
+          }
+        ]
+      },
+      {
+        "name": "weighted",
+        "maze_types": [
+          "weighted"
+        ],
+        "sizes": [
+          25,
+          50,
+          100
+        ],
+        "seeds": {
+          "start": 0,
+          "count": 50
+        },
+        "loop_rates": [
+          0.1
+        ],
+        "mud_rates": [
+          0.0,
+          0.1,
+          0.2,
+          0.4
+        ],
+        "timing_repeats": 5,
+        "runs": [
+          {
+            "algorithm": "bfs",
+            "goal_test": "generation"
+          },
+          {
+            "algorithm": "ucs"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "tie_rule": "larger_g"
+          }
+        ]
+      },
+      {
+        "name": "ablation",
+        "maze_types": [
+          "perfect",
+          "looped"
+        ],
+        "sizes": [
+          25,
+          50,
+          100
+        ],
+        "seeds": {
+          "start": 0,
+          "count": 50
+        },
+        "loop_rates": [
+          0.1
+        ],
+        "timing_repeats": 1,
+        "runs": [
+          {
+            "algorithm": "bfs",
+            "goal_test": "generation"
+          },
+          {
+            "algorithm": "bfs",
+            "goal_test": "pop"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "tie_rule": "fifo"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "tie_rule": "larger_g"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "zero",
+            "tie_rule": "fifo"
+          },
+          {
+            "algorithm": "greedy",
+            "heuristic": "manhattan"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "weight": 1.5,
+            "tie_rule": "larger_g"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "weight": 2.0,
+            "tie_rule": "larger_g"
+          },
+          {
+            "algorithm": "astar",
+            "heuristic": "manhattan",
+            "weight": 3.0,
+            "tie_rule": "larger_g"
+          }
+        ]
+      }
+    ]
+  }
+}

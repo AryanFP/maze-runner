@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "maze-runner"
+version = "1.0.0"
+description = "Comparing uninformed and heuristic search in grid mazes (CS3346A, Group 26)"
+requires-python = ">=3.12"
+dependencies = ["numpy", "pandas", "matplotlib", "scipy", "pillow"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
