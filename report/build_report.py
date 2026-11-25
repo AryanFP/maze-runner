@@ -1028,8 +1028,7 @@ refs = [
     "search,” in //Proceedings of the 38th International Conference on Machine Learning (ICML)//, PMLR 139, 2021, "
     "pp. 12029–12039.",
     "L. Lehnert, S. Sukhbaatar, D. Su, Q. Zheng, P. McVay, M. Rabbat and Y. Tian, “Beyond A*: Better planning "
-    "with transformers via search dynamics bootstrapping,” in //Proceedings of the 41st International Conference "
-    "on Machine Learning (ICML)//, 2024. arXiv:2402.14083.",
+    "with transformers via search dynamics bootstrapping,” arXiv preprint arXiv:2402.14083, 2024.",
     "I. Pohl, “Heuristic search viewed as path finding in a graph,” //Artificial Intelligence//, vol. 1, no. 3–4, "
     "pp. 193–204, 1970.",
     "B. Davis, //CS3346A Introduction to Artificial Intelligence//, lecture slides: Lecture 2 (Augmenting "
