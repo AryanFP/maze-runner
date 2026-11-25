@@ -966,21 +966,35 @@ R.bullets([
 
 # ======================================================================= contributions
 R.h("6. Individual Contribution and Professionalism")
+R.table("contrib", ["Member", "Code", "Report"], [
+    ["Aryan Muhammad",
+     "Search loop, BFS, UCS, A*, heuristics, tie rules, greedy; hand-traced known-answer tests and search "
+     "property tests",
+     "Search methods, heuristic proofs, side tests (tie rule, goal test and weighted A* ablations); limitations"],
+    ["Austin Brown",
+     "Perfect and looped maze generators, seed sets; generator tests and maze fingerprints",
+     "Problem setup, maze generation, loop rate sweep; heuristic informedness analysis"],
+    ["Aryan Farhang",
+     "Built the mud maze generator (looped mazes only) and the test that matches the Week 3 lecture "
+     "numbers; ran the experiments and checked the results; wrote the README",
+     "Background and related work, mud maze results, reference list"],
+    ["Ki il Eum",
+     "Path checker, experiment runner, timing, statistics, one-command rerun; configuration files, code "
+     "freeze and decision log",
+     "Testing and evaluation methods, main results table, answer to the 30% target, reproducibility appendix; "
+     "runtime and memory results"],
+    ["Yicheng Luo",
+     "All figures and charts, failure case figure, animated GIF; extra figures for Appendix B",
+     "Report lead: abstract, introduction, conclusion, title question write-up, contribution table, final "
+     "self-grading and proofread; failure case discussion and future work"],
+], "Responsibility of each member for the code components and the report sections.",
+    widths_cm=[2.8, 6.8, 6.9], align_right_from=9)
 R.p(
-    "[[TEAM: this section must describe what actually happened. Replace every highlighted passage, and check "
-    "that it agrees with the peer evaluations and with the git history, "
-    "and add what each member did.]]",
-    align="left"
+    "The split follows the roles in the proposal with two changes. Uniform Cost Search moved from Aryan Farhang "
+    "to Aryan Muhammad, because all four algorithms share one search loop and are easier to keep consistent "
+    "under one owner. Reproducing the Week 3 lecture example moved from Ki il Eum's test work to Aryan Farhang, "
+    "because it exercises the weighted costs that the mud mazes depend on."
 )
-R.table("contrib", ["Member", "Role in the proposal", "What the member actually did (files or sections)"], [
-    ["Aryan Muhammad", "Search algorithms (BFS, A*) and shared search interface", "[[to be filled in by the team]]"],
-    ["Austin Brown", "Maze generation (perfect and looped mazes) and seed sets", "[[to be filled in by the team]]"],
-    ["Aryan Farhang", "Weighted maze extension and Uniform Cost Search",
-     "[[to be filled in by the team]]"],
-    ["Ki il Eum", "Experiment runner, metrics, and tests with known answers", "[[to be filled in by the team]]"],
-    ["Yicheng Luo", "Charts, search visuals, and final report lead", "[[to be filled in by the team]]"],
-], "Roles planned in the proposal and actual contributions.", widths_cm=[3.0, 5.2, 8.3], align_right_from=9)
-R.p("[[If roles changed from the proposal, say so here in one or two sentences and explain why.]]", align="left")
 R.p(
     "The results were not taken on trust. They were checked by means that do not depend on any one piece of "
     "code being right:"
