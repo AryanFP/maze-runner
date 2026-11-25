@@ -295,6 +295,27 @@ R.p(
     "[13] and both are evaluated by counting expansions against A*, which is the metric we use."
 )
 R.p(
+    "**Why a good heuristic can still leave a lot of work.** Russell and Norvig [4] summarise the quality of a "
+    "heuristic by its effective branching factor, and Pearl [5] analysed how the work done by A* grows with the "
+    "error of the heuristic. Korf, Reid and Edelkamp [16] showed that the number of nodes expanded by "
+    "iterative-deepening A* can be predicted from the distribution of heuristic values over the state space, "
+    "not from the heuristic's accuracy at the start state alone. Our informedness h(start)/C* is a "
+    "one-number summary of that idea, which is why we treat it as a predictor of savings and not as their cause. "
+    "Helmert and Röger [14] showed that even a heuristic that is wrong by only a small constant can leave A* "
+    "with exponentially many nodes to expand, because many states share f = C*. Asai and Fukunaga [15] studied "
+    "this final plateau directly and found that the tie-breaking rule used inside it changes the number of "
+    "expansions substantially; preferring nodes with smaller h, which at equal f is the same as preferring "
+    "larger g, is a common default. Our open-grid result in Section 4.3, where first-in-first-out ties lose "
+    "all of A*'s advantage while larger-g ties keep almost all of it, is a small and clean instance of their "
+    "observation."
+)
+R.p(
+    "**Changing environments.** A robot exploring unknown terrain must replan whenever it discovers a wall. "
+    "D* Lite [17] reuses the work of earlier searches so that replanning after a map change costs much less "
+    "than searching again from scratch. Our mazes are static and fully known, so every run starts fresh; "
+    "mazes that change during the search are one of the extensions in Section 5."
+)
+R.p(
     "**How this project differs.** We do not propose a new algorithm. We run a controlled study of a single "
     "factor, maze structure, and ask how it changes the value of a fixed, standard heuristic. The mazes come from "
     "one generator with one knob (the fraction of walls removed), so the heuristic's accuracy can be varied "
@@ -962,6 +983,8 @@ R.bullets([
     "course [13], and value iteration replaces search.",
     "**Memory-bounded and bidirectional search:** IDA* and bidirectional BFS are natural competitors when the "
     "reached table, rather than the frontier, is the limit.",
+    "**Changing mazes:** open or close walls during the search and compare repeated A* with incremental "
+    "replanning such as D* Lite [17].",
 ])
 
 # ======================================================================= contributions
@@ -1055,6 +1078,14 @@ refs = [
     "B. Davis, //CS3346A Introduction to Artificial Intelligence//, lecture slides: Lecture 2 (Augmenting "
     "intelligence and searching state spaces), Week 3 (Heuristics and graph search), Week 6 (Markov decision "
     "processes), Week 10 (Learning and evaluation). Western University, Fall 2026.",
+    "M. Helmert and G. Röger, “How good is almost perfect?,” in //Proceedings of the Twenty-Third AAAI "
+    "Conference on Artificial Intelligence (AAAI-08)//, 2008, pp. 944–949.",
+    "M. Asai and A. Fukunaga, “Tiebreaking strategies for A* search: How to explore the final frontier,” in "
+    "//Proceedings of the Thirtieth AAAI Conference on Artificial Intelligence (AAAI-16)//, 2016, pp. 673–679.",
+    "R. E. Korf, M. Reid and S. Edelkamp, “Time complexity of iterative-deepening-A*,” //Artificial "
+    "Intelligence//, vol. 129, no. 1–2, pp. 199–218, 2001.",
+    "S. Koenig and M. Likhachev, “D* Lite,” in //Proceedings of the Eighteenth National Conference on "
+    "Artificial Intelligence (AAAI-02)//, 2002, pp. 476–483.",
 ]
 for i, ref in enumerate(refs, 1):
     R.p(f"[{i}] {ref}", align="left", size=10, space_after=3)
