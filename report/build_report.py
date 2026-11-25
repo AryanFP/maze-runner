@@ -1022,7 +1022,7 @@ R.p(
     "submitted code from the listed seeds; no external data set was used. Every number, table and figure is "
     "produced by a script from the final results file, and the results file, metadata and seeds are submitted "
     "with the code. The success criterion was fixed in the proposal and is reported as stated, including where "
-    "it was not met. The work was tracked in the group's GitHub repository [[URL]], where the commit history "
+    "it was not met. The work was tracked in a git repository, submitted with the code, where the commit history "
     "and the tag `v1.0-final-run` record the code freeze, and every design choice that could change a number "
     "is logged with its reason in `DECISIONS.md` before the final run."
 )
