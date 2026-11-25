@@ -12,7 +12,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
-_TOKEN = re.compile(r"(\*\*.+?\*\*|\*.+?\*|`.+?`|\[\[.+?\]\])")
+_TOKEN = re.compile(r"(\*\*.+?\*\*|//.+?//|`.+?`|\[\[.+?\]\])", re.S)
 HEADER_FILL = "1F3A5F"
 BODY_FONT = "Calibri"
 
@@ -62,8 +62,8 @@ class Report:
                 part, highlight = part[2:-2], True
             elif part.startswith("`") and part.endswith("`"):
                 part, code = part[1:-1], True
-            elif part.startswith("*") and part.endswith("*") and len(part) > 2:
-                part, italic = part[1:-1], True
+            elif part.startswith("//") and part.endswith("//") and len(part) > 4:
+                part, italic = part[2:-2], True
             run = paragraph.add_run(part)
             run.bold, run.italic = bold or None, italic or None
             if code:
@@ -158,6 +158,14 @@ class Report:
             for row in table.rows:
                 for cell, width in zip(row.cells, widths_cm):
                     cell.width = Cm(width)
+        # keep the table on one page: no row may split, and every row stays with the next one
+        for row in table.rows:
+            cant_split = OxmlElement("w:cantSplit")
+            row._tr.get_or_add_trPr().append(cant_split)
+        for row in table.rows[:-1]:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    paragraph.paragraph_format.keep_with_next = True
         spacer = self.doc.add_paragraph()
         spacer.paragraph_format.space_after = Pt(4)
         return table

@@ -1,0 +1,137 @@
+{
+  "suite": "final",
+  "headline_astar": "A* (larger-g ties)",
+  "target": 0.3,
+  "defaults": {
+    "loop_rate": 0.1,
+    "mud_rate": 0.2,
+    "tie_rule": "larger_g",
+    "neighbor_order": [
+      "Up",
+      "Right",
+      "Down",
+      "Left"
+    ]
+  },
+  "verification": {
+    "rows": 9350,
+    "mazes": 2650,
+    "distinct_mazes": 2503,
+    "legal": 9350,
+    "optimal_expected": 7550,
+    "optimal_ok": 7550,
+    "per_experiment": {
+      "main": {
+        "rows": 800,
+        "mazes": 400
+      },
+      "sweep": {
+        "rows": 4050,
+        "mazes": 1350
+      },
+      "weighted": {
+        "rows": 1800,
+        "mazes": 600
+      },
+      "ablation": {
+        "rows": 2700,
+        "mazes": 300
+      }
+    }
+  },
+  "microseconds_per_expansion": {
+    "A* (larger-g ties)": 1.4402454874325596,
+    "BFS": 0.9398144787153772
+  },
+  "main": {
+    "mazes": 400,
+    "same_path_length": 400,
+    "astar_wins": 396,
+    "astar_ties": 4,
+    "astar_losses": 0,
+    "spearman_informedness_savings": 0.8092011572074584
+  },
+  "cases": {
+    "worst_25": {
+      "maze_type": "perfect",
+      "n_cells": 25,
+      "seed": 10029,
+      "loop_rate": 0.0,
+      "savings": 0.0,
+      "bfs_expanded": 342,
+      "astar_expanded": 342,
+      "informedness": 0.358209,
+      "path_len": 268,
+      "open_cells": 1249
+    },
+    "best_25": {
+      "maze_type": "looped",
+      "n_cells": 25,
+      "seed": 10032,
+      "loop_rate": 0.1,
+      "savings": 0.7753686036426712,
+      "bfs_expanded": 1153,
+      "astar_expanded": 259,
+      "informedness": 0.827586,
+      "path_len": 116,
+      "open_cells": 1307
+    },
+    "worst_overall": {
+      "maze_type": "perfect",
+      "n_cells": 10,
+      "seed": 10011,
+      "loop_rate": 0.0,
+      "savings": 0.0,
+      "bfs_expanded": 62,
+      "astar_expanded": 62,
+      "informedness": 0.642857,
+      "path_len": 56,
+      "open_cells": 199
+    }
+  },
+  "sweep": {
+    "mazes": 1350,
+    "spearman": {
+      "A* (FIFO ties)": 0.1864847980053127,
+      "A* (larger-g ties)": 0.9182685908528346
+    },
+    "losses": {
+      "A* (FIFO ties)": 150,
+      "A* (larger-g ties)": 0
+    }
+  },
+  "weighted": {
+    "mazes": 600,
+    "ucs_astar_same_cost": 600
+  },
+  "ablation": {
+    "mazes": 300,
+    "bfs_removal_extra_mean": 4.64,
+    "fifo_minus_larger_g_mean": {
+      "looped": 211.12666666666667,
+      "perfect": 6.3
+    }
+  },
+  "environment": {
+    "python": "3.13.6",
+    "implementation": "CPython",
+    "os": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "cpu": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "cpu_count": 12,
+    "packages": {
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "matplotlib": "3.11.2",
+      "scipy": "1.18.1",
+      "pytest": "9.2.0",
+      "pillow": "13.0.0",
+      "python-docx": "1.2.0"
+    },
+    "git_commit": "a65e8faf4c9cbeda07cf2e014369190c4758673f",
+    "git_describe": "v1.0-final-run-dirty",
+    "git_dirty": true
+  },
+  "started_utc": "2026-11-25T03:21:46+00:00",
+  "duration_s": 524.8
+}
