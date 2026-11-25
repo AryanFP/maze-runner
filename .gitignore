@@ -10,3 +10,5 @@ results/repro_check/
 report/ieee/*.aux
 report/ieee/*.log
 report/ieee/*.out
+
+CLAUDE.md
