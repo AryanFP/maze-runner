@@ -1,11 +1,11 @@
-"""Seeded maze generation: perfect and looped mazes.
+"""Seeded maze generation: perfect, looped and weighted (mud) mazes.
 
 A maze of size n means n x n cells. It is stored as an occupancy grid of
 (2n+1) x (2n+1) squares. Cell (r, c) sits at square (2r+1, 2c+1); the square
 between two neighbouring cells is either a wall or an open passage; squares at
 (even, even) positions are pillars and are always walls.
 
-Square values are entry costs: 0 = wall, 1 = normal open square.
+Square values are entry costs: 0 = wall, 1 = normal open square, 5 = mud.
 
 Every maze is built from local random generators seeded from the maze seed, so
 the global random state is never touched and a seed always rebuilds the same
@@ -22,8 +22,9 @@ import numpy as np
 
 WALL = 0
 OPEN = 1
+MUD = 5
 
-MAZE_TYPES = ("perfect", "looped")
+MAZE_TYPES = ("perfect", "looped", "weighted")
 
 # Cell-level carving directions (row change, column change).
 _CELL_DIRS = ((-1, 0), (0, 1), (1, 0), (0, -1))
@@ -37,6 +38,7 @@ class Maze:
     n: int
     seed: int
     loop_rate: float
+    mud_rate: float
     grid: np.ndarray
     start: tuple[int, int]
     goal: tuple[int, int]
@@ -49,6 +51,10 @@ class Maze:
     def open_cells(self) -> int:
         """Number of non-wall squares of the occupancy grid."""
         return int(np.count_nonzero(self.grid))
+
+    @property
+    def mud_cells(self) -> int:
+        return int(np.count_nonzero(self.grid == MUD))
 
     @property
     def passages(self) -> int:
@@ -124,6 +130,16 @@ def _add_loops(grid: np.ndarray, n: int, loop_rate: float, rng: random.Random) -
         grid[r, c] = OPEN
 
 
+def _add_mud(grid: np.ndarray, mud_rate: float, start, goal, rng: random.Random) -> None:
+    """Turn a fraction `mud_rate` of the open squares into mud. Start and goal stay normal."""
+    candidates = [
+        (int(r), int(c)) for r, c in np.argwhere(grid != WALL) if (r, c) != start and (r, c) != goal
+    ]
+    rng.shuffle(candidates)
+    for r, c in candidates[: round(mud_rate * len(candidates))]:
+        grid[r, c] = MUD
+
+
 def is_reachable(grid: np.ndarray, start, goal) -> bool:
     """Plain flood fill from start. Used only as the maze validity check."""
     rows, cols = grid.shape
@@ -146,31 +162,41 @@ def make_maze(
     n: int,
     seed: int,
     loop_rate: float = 0.0,
+    mud_rate: float = 0.0,
 ) -> Maze:
     """Build one maze.
 
     perfect:  spanning tree, exactly one simple path between any two cells.
     looped:   the perfect maze of the same seed with a fraction `loop_rate`
               of its remaining internal walls opened.
+    weighted: a looped maze in which a fraction `mud_rate` of the open squares
+              costs 5 to enter. Weighted mazes are never built on perfect
+              mazes: with a single route, costs cannot change which path wins.
     """
     if maze_type not in MAZE_TYPES:
         raise ValueError(f"unknown maze type {maze_type!r}")
     if n < 2:
         raise ValueError("maze size n must be at least 2")
-    if not 0.0 <= loop_rate <= 1.0:
-        raise ValueError("loop_rate must be in [0, 1]")
-    if maze_type == "perfect" and loop_rate != 0.0:
-        raise ValueError("a perfect maze has loop_rate 0")
+    if not 0.0 <= loop_rate <= 1.0 or not 0.0 <= mud_rate <= 1.0:
+        raise ValueError("loop_rate and mud_rate must be in [0, 1]")
+    if maze_type == "perfect" and (loop_rate != 0.0 or mud_rate != 0.0):
+        raise ValueError("a perfect maze has loop_rate 0 and mud_rate 0")
+    if maze_type == "looped" and mud_rate != 0.0:
+        raise ValueError("a looped maze has mud_rate 0 (use maze_type='weighted')")
+    if maze_type == "weighted" and loop_rate <= 0.0:
+        raise ValueError("weighted mazes must be built on looped mazes (loop_rate > 0)")
 
     start = (1, 1)
     goal = (2 * n - 1, 2 * n - 1)
     grid = _carve_perfect(n, _rng(seed, f"carve/{n}"))
     if loop_rate > 0.0:
         _add_loops(grid, n, loop_rate, _rng(seed, f"loops/{n}"))
+    if mud_rate > 0.0:
+        _add_mud(grid, mud_rate, start, goal, _rng(seed, f"mud/{n}"))
 
     if not is_reachable(grid, start, goal):
         raise RuntimeError(
             f"generator bug: goal unreachable in {maze_type} maze n={n} seed={seed}"
         )
     grid.setflags(write=False)
-    return Maze(maze_type, n, seed, float(loop_rate), grid, start, goal)
+    return Maze(maze_type, n, seed, float(loop_rate), float(mud_rate), grid, start, goal)

@@ -5,7 +5,7 @@ import random
 import numpy as np
 import pytest
 
-from maze_runner.generator import OPEN, WALL, is_reachable, make_maze
+from maze_runner.generator import MUD, OPEN, WALL, is_reachable, make_maze
 
 SIZES = [2, 3, 5, 10, 25]
 SEEDS = [0, 1, 2, 7, 42]
@@ -34,6 +34,7 @@ def _component_count_and_edges(grid):
 @pytest.mark.parametrize("maze_type,kwargs", [
     ("perfect", {}),
     ("looped", {"loop_rate": 0.1}),
+    ("weighted", {"loop_rate": 0.1, "mud_rate": 0.2}),
 ])
 def test_same_seed_rebuilds_the_same_maze(maze_type, kwargs):
     a = make_maze(maze_type, 25, 77, **kwargs)
@@ -51,7 +52,7 @@ def test_generation_does_not_touch_global_random_state():
     random.seed(123)
     expected = random.random()
     random.seed(123)
-    make_maze("looped", 10, 5, loop_rate=0.1)
+    make_maze("weighted", 10, 5, loop_rate=0.1, mud_rate=0.2)
     assert random.random() == expected
 
 
@@ -96,6 +97,23 @@ def test_loop_rate_one_opens_every_internal_wall():
     n = 10
     maze = make_maze("looped", n, 0, loop_rate=1.0)
     assert maze.passages == 2 * n * (n - 1)
+
+
+@pytest.mark.parametrize("seed", SEEDS)
+def test_weighted_maze_mud(seed):
+    maze = make_maze("weighted", 25, seed, loop_rate=0.1, mud_rate=0.2)
+    base = make_maze("looped", 25, seed, loop_rate=0.1)
+    assert maze.grid[maze.start] == OPEN and maze.grid[maze.goal] == OPEN
+    assert set(np.unique(maze.grid)) == {WALL, OPEN, MUD}
+    assert maze.mud_cells == round(0.2 * (maze.open_cells - 2))
+    assert np.array_equal(maze.grid != WALL, base.grid != WALL)  # mud never changes the layout
+
+
+def test_weighted_mazes_must_be_looped():
+    with pytest.raises(ValueError):
+        make_maze("weighted", 10, 0, loop_rate=0.0, mud_rate=0.2)
+    with pytest.raises(ValueError):
+        make_maze("perfect", 10, 0, mud_rate=0.2)
 
 
 @pytest.mark.parametrize("n", SIZES)
