@@ -1,6 +1,6 @@
-# Aryan Muhammad: review branch `aryan-muhammad`
+# Aaliyan Muhammad: review branch `aaliyan-muhammad`
 
-Work on the branch `aryan-muhammad`, commit from your own account, and open a merge request into `main`.
+Work on the branch `aaliyan-muhammad`, commit from your own account, and open a merge request into `main`.
 
 ## Code you are responsible for
 - `src/maze_runner/search.py`, `heuristics.py`, `problem.py`

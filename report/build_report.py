@@ -145,7 +145,7 @@ F, Tn = R.F, R.T
 if IEEE:
     R.title = "Maze Runner: Comparing Uninformed and Heuristic Search in Grid Mazes"
     R.subtitle = "When does the A* heuristic stop helping?"
-    R.authors = [("Aryan Muhammad", "251357591"), ("Austin Brown", "251446658"), ("Aryan Farhang", "251311878"),
+    R.authors = [("Aaliyan Muhammad", "251357591"), ("Austin Brown", "251446658"), ("Aryan Farhang", "251311878"),
                  ("Ki il Eum", "251181143"), ("Yicheng Luo", "251248739")]
     R.affiliation = ["CS3346A, Group 26", "Dept. of Computer Science", "Western University, London, Canada"]
     R.keywords = ("heuristic search, A*, breadth-first search, uniform cost search, maze generation, "
@@ -157,7 +157,7 @@ R.p("**Maze Runner: Comparing Uninformed and Heuristic Search in Grid Mazes**", 
 R.p("When does the A* heuristic stop helping?", align="center", size=13, italic=True, space_after=10)
 R.p("CS3346A Introduction to Artificial Intelligence, Fall 2026 · Dr. Brent Davis · Group 26", align="center",
     space_after=2)
-R.p("Aryan Muhammad (251357591), Austin Brown (251446658), Aryan Farhang (251311878), "
+R.p("Aaliyan Muhammad (251357591), Austin Brown (251446658), Aryan Farhang (251311878), "
     "Ki il Eum (251181143), Yicheng Luo (251248739)", align="center", space_after=2)
 R.p("Final report, December 7, 2026", align="center", space_after=14)
 
@@ -1004,7 +1004,7 @@ R.bullets([
 # ======================================================================= contributions
 R.h("6. Individual Contribution and Professionalism")
 R.table("contrib", ["Member", "Code", "Report"], [
-    ["Aryan Muhammad",
+    ["Aaliyan Muhammad",
      "Search loop, BFS, UCS, A*, heuristics, tie rules, greedy; hand-traced known-answer tests and search "
      "property tests",
      "Search methods, heuristic proofs, side tests (tie rule, goal test and weighted A* ablations); limitations"],
@@ -1028,7 +1028,7 @@ R.table("contrib", ["Member", "Code", "Report"], [
     widths_cm=[2.8, 6.8, 6.9], align_right_from=9)
 R.p(
     "The split follows the roles in the proposal with two changes. Uniform Cost Search moved from Aryan Farhang "
-    "to Aryan Muhammad, because all four algorithms share one search loop and are easier to keep consistent "
+    "to Aaliyan Muhammad, because all four algorithms share one search loop and are easier to keep consistent "
     "under one owner. Reproducing the Week 3 lecture example moved from Ki il Eum's test work to Aryan Farhang, "
     "because it exercises the weighted costs that the mud mazes depend on."
 )
@@ -1045,7 +1045,7 @@ R.bullets([
     f"{num(V['rows'])} rows) except for the timing columns (Appendix A).",
 ])
 R.p(
-    "Each member also reviewed the code for their own part. Aryan Muhammad read the search loop and "
+    "Each member also reviewed the code for their own part. Aaliyan Muhammad read the search loop and "
     "the heuristic code, traced the small known-answer grids by hand and compared them with the tests, and "
     "checked the admissibility and consistency proofs. Austin Brown read the generator and inspected rendered "
     "perfect, looped and weighted mazes for their expected structure. Aryan Farhang reran "
