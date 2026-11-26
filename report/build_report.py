@@ -229,7 +229,8 @@ R.p(
     "and the evaluation protocol. Section 4 presents and interprets the results, including a failure case and "
     "the limitations. Section 5 concludes and lists future work. Section 6 records individual contributions. "
     "Appendix A is the reproducibility record and Appendix B holds extra tables and "
-    "figures."
+    "figures. The code, results and report sources are available at "
+    "`https://github.com/AryanFP/maze-runner`."
 )
 
 # ========================================================================== background
@@ -1059,8 +1060,9 @@ R.p(
     "submitted code from the listed seeds; no external data set was used. Every number, table and figure is "
     "produced by a script from the final results file, and the results file, metadata and seeds are submitted "
     "with the code. The success criterion was fixed in the proposal and is reported as stated, including where "
-    "it was not met. The work was tracked in a git repository, submitted with the code, where the commit history "
-    "and the tag `v1.0-final-run` record the code freeze, and every design choice that could change a number "
+    "it was not met. The work is tracked in a public git repository, `https://github.com/AryanFP/maze-runner`, "
+    "submitted with the code: each member committed their own part and merged it through a pull request, the "
+    "tag `v1.0-final-run` records the code freeze, and every design choice that could change a number "
     "is logged with its reason in `DECISIONS.md` before the final run."
 )
 
@@ -1107,6 +1109,7 @@ for i, ref in enumerate(refs, 1):
 # ========================================================================== appendix A
 R.h("Appendix A: Reproducibility")
 R.table("env", ["Item", "Value"], [
+    ["Repository", "https://github.com/AryanFP/maze-runner"],
     ["Code version", f"git tag {TAG} (commit {env['git_commit'][:12]}). "
                      + ("The run recorded one modified tracked file, report/docx_helpers.py (report formatting "
                         "only). Nothing under src/, tests/ or config/ differed from the tag."
