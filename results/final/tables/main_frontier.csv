@@ -1,0 +1,9 @@
+maze_type,n_cells,bfs_peak,astar_peak
+looped,10,7.62,8.38
+looped,25,24.64,33.88
+looped,50,51.54,92.54
+looped,100,106.42,243.1
+perfect,10,3.02,3.26
+perfect,25,5.9,5.4
+perfect,50,8,8.38
+perfect,100,12.62,12.98
