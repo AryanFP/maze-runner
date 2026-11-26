@@ -1,4 +1,4 @@
-"""Known-answer tests: tiny hand-traced grids.
+"""Known-answer tests: tiny hand-traced grids and the Week 3 lecture example.
 
 Conventions used in every trace below
   * neighbour order: Up, Right, Down, Left
@@ -199,3 +199,50 @@ def test_bfs_takes_the_short_expensive_route_and_ucs_astar_the_cheap_one():
     assert ucs.path_len == 6 and ucs.path_cost == 6
     assert astar.path_len == 6 and astar.path_cost == 6
 
+
+# ---------------------------------------------------------------------------
+# 7. Week 3 lecture example: "A robot on a weighted grid" (slides 17 and 19)
+#    Four directions, pay the destination cell cost, the start is free.
+#    Reported on slide 19:  UCS cost 13 / 26 expansions
+#                           Greedy cost 65 / 9 expansions
+#                           A* cost 13 / 25 expansions (FIFO ties)
+# ---------------------------------------------------------------------------
+LECTURE_GRID = """
+1 1 1 1 1 1 1 1 1 1
+1 # # # # # # # # 1
+S 8 8 8 8 8 8 8 8 G
+1 # # # # # # # # 1
+1 1 1 1 1 1 1 1 1 1
+"""
+
+
+def test_lecture_grid_ucs():
+    r = run(LECTURE_GRID, "ucs")
+    assert (r.path_cost, r.expanded) == (13, 26)
+
+
+def test_lecture_grid_greedy():
+    r = run(LECTURE_GRID, "greedy")
+    assert (r.path_cost, r.expanded) == (65, 9)
+    assert r.path == [(2, c) for c in range(10)]  # straight through the expensive cells
+
+
+def test_lecture_grid_astar_fifo():
+    r = run(LECTURE_GRID, "astar", tie_rule="fifo")
+    assert (r.path_cost, r.expanded) == (13, 25)
+    # "With FIFO ties, A* explores both symmetric detours."
+    assert (0, 5) in r.expansion_order and (4, 5) in r.expansion_order
+
+
+def test_lecture_grid_astar_larger_g_explores_one_detour():
+    # S, (1,0), (3,0), then the whole top row (10 cells) and (1,9): 14 expansions
+    r = run(LECTURE_GRID, "astar", tie_rule="larger_g")
+    assert (r.path_cost, r.expanded) == (13, 14)
+    assert (4, 5) not in r.expansion_order
+
+
+def test_lecture_grid_with_central_costs_changed_to_one():
+    # The lab's follow-up: with the eight central costs set to 1 the straight route costs 9.
+    text = LECTURE_GRID.replace("8", "1")
+    for algorithm in ("ucs", "astar", "greedy"):
+        assert run(text, algorithm).path_cost == 9
